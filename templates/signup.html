@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodAdvisor - Sign Up</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="FoodAdvisor Logo" class="login-logo">
+            <h1 class="login-title">Join FoodAdvisor</h1>
+            <p class="login-subtitle">Create your account</p>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}" style="margin-bottom: 16px; text-align: left;">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('signup') }}" style="text-align: left;">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="At least 6 characters" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="favorite_food">Favorite Food (optional)</label>
+                    <input type="text" id="favorite_food" name="favorite_food" class="form-control" placeholder="e.g., Pizza, Sushi, etc.">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">
+                    Create Account
+                </button>
+            </form>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                Already have an account? <a href="{{ url_for('login') }}" style="color: #F46A27; font-weight: 500;">Log in</a>
+            </p>
+            <a href="{{ url_for('index') }}" style="color: #999; font-size: 13px; margin-top: 8px; display: inline-block;">
+                Back to home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

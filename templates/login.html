@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodAdvisor - Welcome</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="FoodAdvisor Logo" class="login-logo">
+            <h1 class="login-title">FoodAdvisor</h1>
+            <p class="login-subtitle">Your personal nutrition assistant</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+                <a href="{{ url_for('login') }}" class="btn btn-primary" style="width: 100%;">
+                    Log In
+                </a>
+                <a href="{{ url_for('signup') }}" class="btn btn-secondary" style="width: 100%;">
+                    Join Us Now
+                </a>
+                <a href="{{ url_for('home') }}" style="margin-top: 8px; color: #666; font-size: 14px;">
+                    Continue as Guest
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

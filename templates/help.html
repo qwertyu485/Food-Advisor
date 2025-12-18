@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}FoodAdvisor - Help{% endblock %}
+
+{% block page_title %}
+<div class="page-title">
+    <h1>Help Page</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <div class="card">
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 24px;">How to use FoodAdvisor</h2>
+        
+        <ul style="font-size: 16px; line-height: 2.2; color: #555; padding-left: 24px; list-style-type: disc;">
+            <li><strong style="color: #333;">Go to the Home page</strong> and find the search bar to begin.</li>
+            <li><strong style="color: #333;">Enter a food name</strong> such as apple, rice, milk, chicken, banana.</li>
+            <li><strong style="color: #333;">Click "Search"</strong> to fetch nutrition data from the USDA API.</li>
+            <li><strong style="color: #333;">View nutrition results</strong> including calories, protein, carbs, vitamins, and more.</li>
+            <li><strong style="color: #333;">Check dietary advice</strong> shown below your nutrition results.</li>
+        </ul>
+    </div>
+    
+    <div class="card" style="margin-top: 24px;">
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 8px;">Contact us</h2>
+        <p style="color: #666; font-style: italic; margin-bottom: 24px;">Have a question? Fill out the form below.</p>
+        
+        <form method="POST" action="{{ url_for('help_page') }}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="text" name="name" class="form-control" placeholder="Name" required style="background: #f5f5f5;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="email" name="email" class="form-control" placeholder="Email Address" required style="background: #f5f5f5;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <textarea name="message" class="form-control" placeholder="Message" rows="5" required style="background: #f5f5f5;"></textarea>
+            </div>
+            
+            <div style="text-align: right;">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

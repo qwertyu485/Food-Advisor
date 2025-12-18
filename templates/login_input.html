@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodAdvisor - Log In</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="FoodAdvisor Logo" class="login-logo">
+            <h1 class="login-title">Welcome Back</h1>
+            <p class="login-subtitle">Log in to your account</p>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}" style="margin-bottom: 16px; text-align: left;">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('login') }}{% if next %}?next={{ next }}{% endif %}" style="text-align: left;">
+                {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    <p style="font-size: 12px; color: #b45309; margin-top: 8px; background: #fef3c7; padding: 8px; border-radius: 4px;">
+                        Password must be at least 6 characters
+                    </p>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">
+                    Log In
+                </button>
+            </form>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                Don't have an account? <a href="{{ url_for('signup') }}" style="color: #F46A27; font-weight: 500;">Sign up</a>
+            </p>
+            <a href="{{ url_for('index') }}" style="color: #999; font-size: 13px; margin-top: 8px; display: inline-block;">
+                Back to home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}FoodAdvisor - Home{% endblock %}
+
+{% block page_title %}
+<div class="page-title">
+    <h1>Food Search</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="home-background">
+<div class="container">
+    <div class="search-section">
+        <h2 style="text-align: center; margin-bottom: 24px; font-family: 'Outfit', sans-serif; font-size: 24px;">Search for Nutrition Information</h2>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="e.g., McNuggets, peanut butter sandwich, burger, ramen" data-testid="input-search">
+            <button id="search-btn" class="search-btn" data-testid="button-search">Search</button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding: 12px 16px; background: #f0f9f4; border-radius: 8px;">
+            <p style="color: #065f46; font-size: 14px; margin-bottom: 6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                {% if current_user.is_authenticated %}
+                You can use the <a href="{{ url_for('calculator') }}" style="color: #059669; text-decoration: underline;">meal calculator</a> to calculate total nutrition for an entire meal, and view your <a href="{{ url_for('history') }}" style="color: #059669; text-decoration: underline;">search history</a> anytime.
+                {% else %}
+                To use the <a href="#" onclick="showLoginModal('/calculator'); return false;" style="color: #059669; text-decoration: underline;">meal calculator</a> or view your <a href="#" onclick="showLoginModal('/history'); return false;" style="color: #059669; text-decoration: underline;">search history</a>, please log in.
+                {% endif %}
+            </p>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('login') }}" style="color: #059669; font-weight: 600; text-decoration: underline;">Log in now</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 12px; padding: 24px; max-width: 400px; width: 90%; text-align: center;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 12px;">Login Required</h3>
+            <p style="color: #666; margin-bottom: 20px;">You need to log in to access this feature.</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <a id="login-modal-login-btn" href="/login" class="btn btn-primary" style="padding: 10px 24px;">Log in</a>
+                <button onclick="closeLoginModal()" class="btn btn-secondary" style="padding: 10px 24px;">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="results-section" class="results-section" style="display: none;">
+        <h3 style="margin-bottom: 16px; font-size: 20px;">Search Results</h3>
+        <div id="results-container"></div>
+    </div>
+</div>
+</div>
+
+<script>
+document.getElementById('search-btn').addEventListener('click', unifiedSearch);
+document.getElementById('search-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') unifiedSearch();
+});
+
+function showLoginModal(redirectUrl) {
+    const modal = document.getElementById('login-modal');
+    const loginBtn = document.getElementById('login-modal-login-btn');
+    loginBtn.href = '/login?next=' + encodeURIComponent(redirectUrl);
+    modal.style.display = 'flex';
+}
+
+function closeLoginModal() {
+    document.getElementById('login-modal').style.display = 'none';
+}
+
+async function unifiedSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    if (!query) return;
+    
+    // Hide previous results
+    document.getElementById('results-section').style.display = 'none';
+    
+    // Do simple food search only (meal calculations are in the Calculator page)
+    await searchFood(query);
+}
+
+async function searchFood(query) {
+    const resultsSection = document.getElementById('results-section');
+    const resultsContainer = document.getElementById('results-container');
+    
+    resultsContainer.innerHTML = '<p style="text-align: center; color: #666;">Searching...</p>';
+    resultsSection.style.display = 'block';
+    
+    try {
+        const response = await fetch(`/api/foods/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        if (data.foods && data.foods.length > 0) {
+            resultsContainer.innerHTML = data.foods.map(food => {
+                const nutrients = food.foodNutrients || [];
+                const getNutrient = (name) => {
+                    const n = nutrients.find(x => x.nutrientName === name);
+                    return n ? Math.round(n.value) : 0;
+                };
+                const calories = getNutrient('Energy');
+                const protein = getNutrient('Protein');
+                const fat = getNutrient('Total lipid (fat)');
+                const carbs = getNutrient('Carbohydrate, by difference');
+                const fiber = getNutrient('Fiber, total dietary');
+                const sugar = getNutrient('Sugars, total including NLEA');
+                
+                return `
+                    <div class="food-card" data-testid="card-food-${food.fdcId}">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;">${food.description}</h3>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 12px;">${food.brandOwner || 'Generic'}</p>
+                        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; text-align: center;">
+                            <div style="background: #f0fdf4; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #059669; font-size: 14px;">${calories}</div>
+                                <div style="font-size: 10px; color: #666;">kcal</div>
+                            </div>
+                            <div style="background: #eff6ff; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #2563eb; font-size: 14px;">${protein}g</div>
+                                <div style="font-size: 10px; color: #666;">Protein</div>
+                            </div>
+                            <div style="background: #fef3c7; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #d97706; font-size: 14px;">${fat}g</div>
+                                <div style="font-size: 10px; color: #666;">Fat</div>
+                            </div>
+                            <div style="background: #fce7f3; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #db2777; font-size: 14px;">${carbs}g</div>
+                                <div style="font-size: 10px; color: #666;">Carbs</div>
+                            </div>
+                            <div style="background: #ecfdf5; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #065f46; font-size: 14px;">${fiber}g</div>
+                                <div style="font-size: 10px; color: #666;">Fiber</div>
+                            </div>
+                            <div style="background: #fdf2f8; padding: 8px 4px; border-radius: 6px;">
+                                <div style="font-weight: 600; color: #be185d; font-size: 14px;">${sugar}g</div>
+                                <div style="font-size: 10px; color: #666;">Sugar</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Save to history with top 5 results
+            const resultsToSave = data.foods.slice(0, 5).map(food => {
+                const nutrients = food.foodNutrients || [];
+                const getNutrient = (name) => {
+                    const n = nutrients.find(x => x.nutrientName === name);
+                    return n ? Math.round(n.value) : 0;
+                };
+                return {
+                    fdcId: food.fdcId,
+                    description: food.description,
+                    brandOwner: food.brandOwner || 'Generic',
+                    calories: getNutrient('Energy'),
+                    protein: getNutrient('Protein'),
+                    fat: getNutrient('Total lipid (fat)'),
+                    carbs: getNutrient('Carbohydrate, by difference'),
+                    fiber: getNutrient('Fiber, total dietary'),
+                    sugar: getNutrient('Sugars, total including NLEA')
+                };
+            });
+            saveToHistory(query, resultsToSave);
+        } else {
+            resultsContainer.innerHTML = '<p style="text-align: center; color: #666;">No results found. Try a different search term.</p>';
+        }
+    } catch (error) {
+        resultsContainer.innerHTML = '<p style="text-align: center; color: #dc2626;">Error searching. Please try again.</p>';
+    }
+}
+
+async function saveToHistory(query, results = []) {
+    {% if current_user.is_authenticated %}
+    try {
+        const payload = {
+            query: query,
+            results: results
+        };
+        await fetch('/api/history', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'search', payload: payload })
+        });
+    } catch (error) {
+        console.error('Failed to save history:', error);
+    }
+    {% endif %}
+}
+</script>
+{% endblock %}

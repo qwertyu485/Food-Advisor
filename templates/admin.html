@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}FoodAdvisor - Admin{% endblock %}
+
+{% block page_title %}
+<div class="page-title">
+    <h1>Admin - Registered Users</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if not current_user.is_authenticated %}
+    <div class="card password-prompt">
+        <div class="password-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F46A27" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Login Required</h2>
+        <p style="color: #666; margin-bottom: 20px;">Please log in to access the admin panel.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-primary" style="width: 100%;">Log In</a>
+    </div>
+    
+    {% elif not admin_authenticated %}
+    <div class="card password-prompt">
+        <div class="password-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F46A27" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Admin Access</h2>
+        <p style="color: #666; margin-bottom: 20px;">Enter the admin password to view registered users.</p>
+        
+        <form method="POST">
+            <input type="password" name="admin_password" class="form-control" placeholder="Admin password" style="margin-bottom: 16px;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Access Admin Panel</button>
+        </form>
+    </div>
+    
+    {% else %}
+    
+    <div class="card admin-section">
+        <h2>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Registered Users
+        </h2>
+        
+        {% if users %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Email</th>
+                    <th>Favorite Food</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ user.email }}</td>
+                    <td style="color: {{ '#333' if user.favorite_food else '#999' }}">{{ user.favorite_food or 'Not set' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="count-badge count-users">
+            Total: {{ users|length }} registered user{{ 's' if users|length != 1 else '' }}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+            </svg>
+            <p style="font-size: 16px; font-weight: 500;">No registered users yet</p>
+            <p style="font-size: 14px; margin-top: 8px;">Users will appear here after they sign up.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card admin-section">
+        <h2>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Help Messages
+        </h2>
+        
+        {% if messages %}
+        {% for msg in messages %}
+        <div class="message-card">
+            <div class="message-header">
+                <div>
+                    <p class="message-sender">{{ msg.name }}</p>
+                    <p class="message-email">{{ msg.email }}</p>
+                </div>
+                <span class="message-time">{{ msg.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+            <p class="message-content">{{ msg.message }}</p>
+        </div>
+        {% endfor %}
+        <div class="count-badge count-messages">
+            Total: {{ messages|length }} message{{ 's' if messages|length != 1 else '' }}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p style="font-size: 16px; font-weight: 500;">No messages yet</p>
+            <p style="font-size: 14px; margin-top: 8px;">Messages from the Help page will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% endif %}
+</div>
+{% endblock %}

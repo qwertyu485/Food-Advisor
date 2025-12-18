@@ -1,0 +1,115 @@
+{
+  "peanut butter sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "peanut butter", "grams": 32, "search": "peanut butter"}
+    ]
+  },
+  "peanut butter and jelly sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "peanut butter", "grams": 32, "search": "peanut butter"},
+      {"name": "jelly", "grams": 20, "search": "grape jelly"}
+    ]
+  },
+  "ham sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "ham", "grams": 56, "search": "sliced ham"},
+      {"name": "lettuce", "grams": 10, "search": "iceberg lettuce"},
+      {"name": "tomato", "grams": 30, "search": "tomato raw"}
+    ]
+  },
+  "turkey sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "turkey", "grams": 56, "search": "turkey breast deli"},
+      {"name": "lettuce", "grams": 10, "search": "iceberg lettuce"},
+      {"name": "tomato", "grams": 30, "search": "tomato raw"}
+    ]
+  },
+  "grilled cheese": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "cheese", "grams": 42, "search": "american cheese"},
+      {"name": "butter", "grams": 14, "search": "butter salted"}
+    ]
+  },
+  "egg sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "egg", "grams": 50, "search": "egg fried"},
+      {"name": "cheese", "grams": 21, "search": "american cheese"}
+    ]
+  },
+  "blt sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "bacon", "grams": 24, "search": "bacon cooked"},
+      {"name": "lettuce", "grams": 15, "search": "iceberg lettuce"},
+      {"name": "tomato", "grams": 40, "search": "tomato raw"},
+      {"name": "mayonnaise", "grams": 15, "search": "mayonnaise"}
+    ]
+  },
+  "caesar salad": {
+    "ingredients": [
+      {"name": "romaine lettuce", "grams": 100, "search": "romaine lettuce"},
+      {"name": "parmesan cheese", "grams": 15, "search": "parmesan cheese"},
+      {"name": "croutons", "grams": 20, "search": "croutons"},
+      {"name": "caesar dressing", "grams": 30, "search": "caesar salad dressing"}
+    ]
+  },
+  "chicken salad": {
+    "ingredients": [
+      {"name": "chicken breast", "grams": 100, "search": "chicken breast grilled"},
+      {"name": "mixed greens", "grams": 60, "search": "mixed salad greens"},
+      {"name": "tomato", "grams": 50, "search": "tomato raw"},
+      {"name": "cucumber", "grams": 30, "search": "cucumber raw"}
+    ]
+  },
+  "tuna sandwich": {
+    "ingredients": [
+      {"name": "bread", "grams": 56, "search": "white bread"},
+      {"name": "tuna", "grams": 85, "search": "tuna canned in water"},
+      {"name": "mayonnaise", "grams": 15, "search": "mayonnaise"}
+    ]
+  },
+  "avocado toast": {
+    "ingredients": [
+      {"name": "bread", "grams": 30, "search": "whole wheat bread"},
+      {"name": "avocado", "grams": 75, "search": "avocado raw"}
+    ]
+  },
+  "pancakes with syrup": {
+    "ingredients": [
+      {"name": "pancakes", "grams": 150, "search": "pancakes plain"},
+      {"name": "maple syrup", "grams": 60, "search": "maple syrup"},
+      {"name": "butter", "grams": 14, "search": "butter salted"}
+    ]
+  },
+  "oatmeal with banana": {
+    "ingredients": [
+      {"name": "oatmeal", "grams": 40, "search": "oatmeal cooked"},
+      {"name": "banana", "grams": 120, "search": "banana raw"},
+      {"name": "milk", "grams": 120, "search": "milk whole"}
+    ]
+  },
+  "burger": {
+    "ingredients": [
+      {"name": "hamburger bun", "grams": 50, "search": "hamburger bun"},
+      {"name": "beef patty", "grams": 113, "search": "ground beef cooked"},
+      {"name": "cheese", "grams": 21, "search": "american cheese"},
+      {"name": "lettuce", "grams": 10, "search": "iceberg lettuce"},
+      {"name": "tomato", "grams": 20, "search": "tomato raw"},
+      {"name": "ketchup", "grams": 15, "search": "ketchup"}
+    ]
+  },
+  "hot dog": {
+    "ingredients": [
+      {"name": "hot dog bun", "grams": 43, "search": "hot dog bun"},
+      {"name": "hot dog", "grams": 45, "search": "frankfurter beef"},
+      {"name": "mustard", "grams": 5, "search": "mustard yellow"},
+      {"name": "ketchup", "grams": 10, "search": "ketchup"}
+    ]
+  }
+}
